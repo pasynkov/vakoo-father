@@ -4,9 +4,9 @@ _ = require "underscore"
 
 class AccountList extends Backbone.View
 
-  el: $("#account-list")
+#  el: $("#account-list")
 
-  render: ->
-    @$el.html app.templates.account_list items: app.collections.account.toJSON()
+  render: ({collection})->
+    $("#content").html app.templates.account_list items: collection.toJSON()
 
 module.exports = AccountList

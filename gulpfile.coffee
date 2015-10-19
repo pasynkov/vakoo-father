@@ -6,6 +6,8 @@ rename = require "gulp-rename"
 sass = require "gulp-ruby-sass"
 run = require "run-sequence"
 browserify = require "browserify"
+coffee = require "gulp-coffee"
+coffeelint = require "gulp-coffeelint"
 source = require "vinyl-source-stream"
 
 handlebars = require "gulp-handlebars"
@@ -44,11 +46,14 @@ gulp.task "templates", ->
   })
   .pipe wrap('Handlebars.template(<%= contents %>)')
   .pipe declare({
-    namespace: "app.templates"
+    root: "exports"
     noRedeclare: true
+    processName: (filePath)->
+      return declare.processNameByPath(filePath.replace("src/html/templates/",""))
   })
   .pipe concat("templates.js")
-  .pipe gulp.dest("build/js/")
+  .pipe wrap('var Handlebars = require("handlebars");\n <%= contents %>')
+  .pipe gulp.dest("tmp/js/")
 
 
 gulp.task "icons", ->
@@ -71,22 +76,24 @@ gulp.task "css", ->
   .pipe gulp.dest("./build/css")
 
 
-gulp.task "coffeify", ->
-  gulp.src("./src/coffee/*.coffee")
-  .pipe coffeeify()
+gulp.task "coffeeify", ->
+  gulp.src("./src/coffee/**/*.coffee")
+  .pipe coffeelint()
+  .pipe coffeelint.reporter()
+  .pipe coffee()
   .pipe gulp.dest "./tmp/js"
 
-gulp.task "compile-js", ->
+gulp.task "application", ->
   browserify({
-    entries: ["./src/coffee/app.coffee"]
-    extensions: [".coffee"]
+    entries: [
+      "./tmp/js/app.js"
+    ]
+    extensions: [".js"]
   })
-  .transform "coffeeify"
   .transform "debowerify"
   .bundle()
   .pipe(source("app.js"))
   .pipe(gulp.dest("./build/js"))
-
 
 
 gulp.task "connect", ->
@@ -99,8 +106,8 @@ gulp.task "build", ->
     "templates"
     "icons"
     "css"
-    "compile-js"
-  ]
+    "coffeeify"
+  ], "application"
 
 gulp.task "watch", ->
   gulp.watch "src/**/*",["build"]

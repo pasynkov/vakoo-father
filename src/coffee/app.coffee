@@ -4,29 +4,27 @@ Backbone = require "backbone"
 bootstrap = require "bootstrap"
 _ = require "underscore"
 
+class App
 
-MainController = require "./controllers/main"
-AccountController = require "./controllers/account"
+  constructor: ->
+    @templates = require "./templates"
 
-AccountCollection = require "./collections/account"
+    @apiUrl = "http://localhost:8100/api/"
 
-AccountModel = require "./models/account"
+  initialize: ->
 
-AccountView = require "./views/account"
-AccountListView = require "./views/account_list"
+    AccountController = require "./controllers/account"
+    ServerController = require "./controllers/server"
 
-window.app = app = {
-  controllers:
-    main: new MainController
-    account: new AccountController
-  models:
-    account: new AccountModel
-  collections:
-    account: new AccountCollection
-  views:
-    accountList: new AccountListView
-}
+    @controllers = {
+      account: new AccountController
+      server: new ServerController
+    }
 
+    return @
 
+window.app = new App
+app.initialize()
 
-Backbone.history.start()
+$(document).ready ->
+  Backbone.history.start()

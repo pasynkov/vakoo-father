@@ -1,7 +1,44 @@
-<ul>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#accounts">
+                Accounts
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-accounts">
+            <a href="#accounts/add" class="btn btn-default navbar-btn navbar-right">
+                <i class="fa fa-plus"></i>
+            </a>
+            <a href="#accounts/refresh" class="btn btn-default navbar-btn navbar-right">
+                <i class="fa fa-refresh"></i>
+            </a>
+        </div>
+    </div>
+</nav>
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Login</th>
+        <th>Password</th>
+        <th>Email</th>
+        <th>Token</th>
+        <th>Balance</th>
+        <th>Bonus</th>
+        <th>...</th>
+    </tr>
     {{#each items}}
-        <li>
-            login: {{login}}, {{password}}
-        </li>
+        <tr>
+            <td>{{id}}</td>
+            <td>{{login}}</td>
+            <td>{{password}}</td>
+            <td>{{email}}</td>
+            <td>{{token}}</td>
+            <td>{{balance}}</td>
+            <td>{{bonus_balance}}</td>
+            <td>
+                <a href="#accounts/{{id}}/refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                <a href="#accounts/{{id}}/edit" class="btn btn-default"><i class="fa fa-edit"></i></a>
+            </td>
+        </tr>
     {{/each}}
-</ul>
+</table>

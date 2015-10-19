@@ -1,0 +1,49 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#servers">
+                Servers
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-accounts">
+            <a href="#servers/add" class="btn btn-default navbar-btn navbar-right">
+                <i class="fa fa-plus"></i>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="row">
+    {{#each items}}
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="panel panel-{{panel_class}}">
+                <div class="panel-heading">
+                    <h3>
+                        {{name}}
+                        <small>{{host}}</small>
+                        <span class="pull-right">
+                            <a href="#servers/{{id}}/expand" class="btn btn-default">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                            <a href="#servers/{{id}}/stop" class="btn btn-default">
+                                <i class="fa fa-stop"></i>
+                            </a>
+                            <a href="#servers/{{id}}/remove" class="btn btn-default">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </span>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        <b>{{ip}}</b></p>
+                        <i class="fa fa-clone"></i> {{config.cpu}}
+                        <i class="fa fa-tasks"></i> {{config.memory}}
+                        <i class="fa fa-hdd-o"></i> {{config.ssd}}
+                        <i class="fa fa-line-chart"></i> {{config.traffic}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>

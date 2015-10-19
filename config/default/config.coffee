@@ -24,9 +24,14 @@ config =
 #    cacheStatic: true
     port: 8100
 
-#  loggers:
-#    routesInitializer: {}
+  loggers:
+    vscale: {}
 #    cacheInitializer: {}
 #    yandex: {}
+
+  initializers: [
+    "fetcher"
+  ]
+
 
 module.exports = config
