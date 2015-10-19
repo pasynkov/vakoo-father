@@ -1,7 +1,7 @@
 async = require "async"
 _ = require "underscore"
 
-Api = require "../scripts/api"
+Api = require "../scripts/vscale_api"
 
 class AccountController
 

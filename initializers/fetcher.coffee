@@ -1,5 +1,5 @@
 
-Api = require "../scripts/api"
+Api = require "../scripts/vscale_api"
 async = require "async"
 _ = require "underscore"
 
