@@ -22,6 +22,9 @@ class ServerController extends Backbone.Router
   }
 
   list: ->
+
+    app.models.menu.set "active", "servers"
+
     @collection.fetch {
       success: =>
         @views.list.render {@collection}

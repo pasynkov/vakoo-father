@@ -39,6 +39,9 @@ class AccountController extends Backbone.Router
       )
 
   list: ->
+
+    app.models.menu.set "active", "accounts"
+
     @collection.fetch {
       success: =>
         @views.list.render {@collection}

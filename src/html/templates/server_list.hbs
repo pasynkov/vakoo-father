@@ -6,7 +6,7 @@
             </a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-accounts">
-            <a href="#servers/add" class="btn btn-default navbar-btn navbar-right">
+            <a href="/servers/add" class="btn btn-default navbar-btn navbar-right">
                 <i class="fa fa-plus"></i>
             </a>
         </div>
@@ -18,30 +18,79 @@
         <div class="col-sm-6 col-md-4 col-lg-3">
             <div class="panel panel-{{panel_class}}">
                 <div class="panel-heading">
-                    <h3>
-                        {{name}}
-                        <small>{{host}}</small>
-                        <span class="pull-right">
-                            <a href="#servers/{{id}}/expand" class="btn btn-default">
-                                <i class="fa fa-expand"></i>
-                            </a>
-                            <a href="#servers/{{id}}/stop" class="btn btn-default">
-                                <i class="fa fa-stop"></i>
-                            </a>
-                            <a href="#servers/{{id}}/remove" class="btn btn-default">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </span>
-                    </h3>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <h3>
+                                {{name}}
+                                <br/><small>{{host}}</small>
+                            </h3>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <span class="pull-right">
+                                <p>
+                                    <a href="#servers/{{id}}/expand" class="btn btn-default">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                    <a href="#servers/{{id}}/stop" class="btn btn-default">
+                                        <i class="fa fa-stop"></i>
+                                    </a>
+                                    <a href="#servers/{{id}}/remove" class="btn btn-default">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </p>
+                                <p>
+                                    <a href="/servers/{{id}}/expand" class="btn btn-default">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                    <a href="/servers/{{id}}/stop" class="btn btn-default">
+                                        <i class="fa fa-stop"></i>
+                                    </a>
+                                    <a href="/servers/{{id}}/remove" class="btn btn-default">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </p>
+                            </span>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-body">
-                    <p>
-                        <b>{{ip}}</b></p>
-                        <i class="fa fa-clone"></i> {{config.cpu}}
-                        <i class="fa fa-tasks"></i> {{config.memory}}
-                        <i class="fa fa-hdd-o"></i> {{config.ssd}}
-                        <i class="fa fa-line-chart"></i> {{config.traffic}}
-                    </p>
+                    <div class="row server-params">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <b>{{ip}}</b>
+                        </div>
+                    </div>
+                    <div class="row server-params">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <i class="fa fa-clone"></i> {{config.cpu}}
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <i class="fa fa-tasks"></i> {{config.memory}}
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <i class="fa fa-hdd-o"></i> {{config.ssd}}
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <i class="fa fa-line-chart"></i> {{config.traffic}}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            {{account.email}} / {{account.balance}} <i class="fa fa-rouble"></i>
+                            <br/>{{configuration.cost.month}} <i class="fa fa-rouble"/> per month
+                            <br/>{{configuration.cost.hour}} <i class="fa fa-rouble"/> per hour
+                            <br/>stopped after {{stopped}} days
+                        </div>
+                    </div>
+                    <div class="row server-buttons">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <a href="#" class="btn btn-default">Button1</a>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <a href="#" class="btn btn-default">Button2</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

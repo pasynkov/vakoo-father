@@ -33,7 +33,10 @@ class ServerList extends Backbone.View
             if item.locked
               item.panel_class = @panelClasses.locked
 
-            configuration = _.findWhere configurations, id: item.configuration_id
+            configuration = _.findWhere(
+              configurations
+              id: item.configuration_id
+            )
 
             item.config = {
               memory: "#{configuration.memory/1024}Gb"

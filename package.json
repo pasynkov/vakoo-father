@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "supervisor -e coffee,hbs -i src,tmp,build,bower_components -- ./node_modules/vakoo/index.coffee start"
+    "start": "supervisor -e coffee,hbs -i src,tmp,build,bower_components -- ./node_modules/vakoo/index.coffee start",
+    "front": "supervisor -i src,build,tmp -x gulp -- default"
   },
   "repository": {
     "type": "git",

@@ -97,7 +97,11 @@ gulp.task "application", ->
 
 
 gulp.task "connect", ->
-  connect.server {root: "./build", port: 8101}
+  connect.server {
+    root: "./build"
+    fallback: "./build/index.html"
+    port: 8101
+  }
 
 
 gulp.task "build", ->
