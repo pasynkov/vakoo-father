@@ -17,7 +17,9 @@ class AccountView extends Backbone.View
     for item in data.items
       item.active = if item.route is data.active then true else false
 
-    $("title").text [_.findWhere(data.items, active: true)?.title, "Vakoo"].join(" -- ")
+    $("title").text(
+      [_.findWhere(data.items, active: true)?.title, "Vakoo"].join(" -- ")
+    )
 
     @$el.html @template @model.toJSON()
 

@@ -11,16 +11,23 @@ class Api
     @logger.info "Initialize api with account `#{@account.email}`"
 
 
-  request: ([method, url], callback)=>
+  request: ([method, url, body], callback)=>
 
     @logger.info "run request `#{method}` to `#{url}`"
+
+    console.log body
 
     request[method] {
       url: @apiUrl + url
       headers:
         "X-Token": @account.token
-      json: true
+      json: body or true
     }, (err, res, body)=>
+      unless res.statusCode is 200
+        console.log res.toJSON()
+        console.log res.request.body
+        console.log res.request.toJSON()
+        console.log res.statusCode, body
       callback err, body
 
   getBalance: (callback)=>

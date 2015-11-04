@@ -1,7 +1,13 @@
 Backbone = require "backbone"
 
+async = require "async"
+
 ServerListView = require "../views/server_list"
+ServerFormView = require "../views/server_form"
 ServerCollection = require "../collections/server"
+ConfigurationCollection = require "../collections/configuration"
+AccountCollection = require "../collections/account"
+TemplateCollection = require "../collections/template"
 
 class ServerController extends Backbone.Router
 
@@ -16,9 +22,7 @@ class ServerController extends Backbone.Router
 
   routes: {
     "servers": "list"
-#    "accounts/:id/refresh": "refresh"
-#    "accounts/:id/edit": "form"
-#    "accounts/add": "form"
+    "servers/add": "add"
   }
 
   list: ->
@@ -29,6 +33,43 @@ class ServerController extends Backbone.Router
       success: =>
         @views.list.render {@collection}
     }
+
+  add: ->
+
+    app.models.menu.set "active", "servers"
+
+    async.parallel(
+      {
+        configurations: (taskCallback)->
+          new ConfigurationCollection().fetch {
+            success: (collection)->
+              taskCallback null, collection.toJSON()
+            error: ->
+              console.log arguments
+          }
+        accounts: (taskCallback)->
+          new AccountCollection().fetch {
+            success: (collection)->
+              taskCallback null, collection.toJSON()
+            error: ->
+              console.log arguments
+
+          }
+        templates: (taskCallback)->
+          new TemplateCollection().fetch {
+            success: (collection)->
+              taskCallback null, collection.toJSON()
+            error: ->
+              console.log arguments
+          }
+      }
+      (err, {configurations, accounts, templates})->
+        if err
+          return alert err
+        new ServerFormView().render({configurations, accounts, templates})
+    )
+
+
 
 #  form: (id)->
 #    unless id

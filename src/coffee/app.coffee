@@ -43,8 +43,10 @@ class App
   initClicks: =>
     $(document).on "click", "a[href^='/']", (event)=>
       href = $(event.currentTarget).attr "href"
-      passThrough = href.indexOf('sign_out') >= 0
-      if not event.altKey and not event.ctrlKey and not event.metaKey and not event.shiftKey
+      unless  _.some(
+        ["altKey", "ctrlKey", "metaKey", "shiftKey"]
+        (i)-> event[i]
+      )
         event.preventDefault()
         url = href.replace(/^\//,'').replace('\#\!\/','')
         @controllers.native.navigate url, {trigger: true}
