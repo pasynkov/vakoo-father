@@ -15,6 +15,8 @@ class Router
     @webServer.addRoute "get", "/api/costs", "server", "costs"
     @webServer.addRoute "post", "/api/servers", "server", "create"
 
+    @webServer.addRoute "get", "/api/servers/keys", "server", "getKeys"
+
 
     @webServer.addRoute "options", "*", "account", "pong"
 

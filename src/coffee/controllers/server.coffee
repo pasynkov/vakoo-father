@@ -4,10 +4,13 @@ async = require "async"
 
 ServerListView = require "../views/server_list"
 ServerFormView = require "../views/server_form"
+KeysListView = require "../views/keys_list"
+
 ServerCollection = require "../collections/server"
 ConfigurationCollection = require "../collections/configuration"
 AccountCollection = require "../collections/account"
 TemplateCollection = require "../collections/template"
+KeysCollection = require "../collections/key"
 
 class ServerController extends Backbone.Router
 
@@ -15,6 +18,7 @@ class ServerController extends Backbone.Router
     @collection = new ServerCollection
     @views = {
       list: new ServerListView
+      keys: new KeysListView
 #      form: new AccountFormView
     }
 
@@ -23,16 +27,85 @@ class ServerController extends Backbone.Router
   routes: {
     "servers": "list"
     "servers/add": "add"
+    "servers/keys": "keysList"
+    "servers/keys/add": "keysAdd"
   }
+
+  subMenuOptions: (active)->
+
+
+
+    {
+      title: do ->
+        active[0].toUpperCase() + active[1...]
+      items: [
+        {
+          title: "Servers"
+          route: "servers"
+          active: active is "servers"
+        }
+        {
+          title: "SSH Keys"
+          route: "servers/keys"
+          active: active is "servers/keys"
+        }
+      ]
+      controls: do ->
+
+        result = []
+
+        switch active
+          when "servers" then do ->
+            result = [{"servers/add": "plus"}]
+          when "servers/keys" then do ->
+            result = [{"servers/keys/add": "plus"}]
+        return result
+    }
+
+  navigate: (fragment, options)->
+    console.log fragment, options
+    super fragment, options
 
   list: ->
 
-    app.models.menu.set "active", "servers"
+    app.models.menu.set {
+      active: "servers"
+      hideSub: false
+    }
+
+    app.models.menu.subMenu.set @subMenuOptions "servers"
 
     @collection.fetch {
       success: =>
         @views.list.render {@collection}
     }
+
+  keysList: ->
+
+    app.models.menu.set {
+      active: "servers"
+      hideSub: false
+    }
+
+    app.models.menu.subMenu.set @subMenuOptions "servers/keys"
+
+    new KeysCollection().fetch {
+      success: @views.keys.render
+      error: ->
+        console.log "error"
+    }
+
+  keysAdd: ->
+
+    app.models.menu.set {
+      active: "servers"
+      hideSub: false
+    }
+
+    app.models.menu.subMenu.set @subMenuOptions "servers/keys"
+
+
+
 
   add: ->
 

@@ -1,0 +1,31 @@
+{{!<ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="#">Home</a></li>
+    <li role="presentation"><a href="#">Profile</a></li>
+    <li role="presentation"><a href="#">Messages</a></li>
+</ul>}}
+
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                {{title}}
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            {{#each items}}
+            <a href="/{{route}}" class="btn btn-{{#if active}}primary{{else}}default{{/if}} navbar-btn">{{title}}</a>
+            {{/each}}
+
+            {{#if controls.length}}
+                {{#each controls}}
+                    {{#each this}}
+                        <a href="/{{@key}}" class="btn btn-default navbar-btn navbar-right">
+                            <i class="fa fa-{{this}}"></i>
+                        </a>
+                    {{/each}}
+                {{/each}}
+            {{/if}}
+        </div>
+    </div>
+</nav>

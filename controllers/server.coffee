@@ -89,5 +89,8 @@ class ServerController
   costs: ->
     vakoo.mysql.collection("server_costs").find @context.sendResult
 
+  getKeys: ->
+    vakoo.mysql.collection("ssh_keys").find @context.sendResult
+
 
 module.exports = ServerController
