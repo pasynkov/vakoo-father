@@ -4,7 +4,7 @@ async = require "async"
 
 ServerListView = require "../views/server_list"
 ServerFormView = require "../views/server_form"
-KeysListView = require "../views/keys_list"
+KeysView = require "../views/keys"
 
 ServerCollection = require "../collections/server"
 ConfigurationCollection = require "../collections/configuration"
@@ -18,7 +18,7 @@ class ServerController extends Backbone.Router
     @collection = new ServerCollection
     @views = {
       list: new ServerListView
-      keys: new KeysListView
+      keys: new KeysView
 #      form: new AccountFormView
     }
 
@@ -29,6 +29,7 @@ class ServerController extends Backbone.Router
     "servers/add": "add"
     "servers/keys": "keysList"
     "servers/keys/add": "keysAdd"
+    "servers/keys/:id/remove": "keysRemove"
   }
 
   subMenuOptions: (active)->
@@ -104,8 +105,22 @@ class ServerController extends Backbone.Router
 
     app.models.menu.subMenu.set @subMenuOptions "servers/keys"
 
+    @views.keys.renderForm()
 
+  keysRemove: (id)->
 
+    new KeysCollection().fetch {
+      success: (collection)=>
+        collection.get(id).destroy {
+          wait: true
+          success: =>
+            @navigate "servers/keys", {trigger: true}
+          error: ->
+            console.log "error"
+        }
+      error: ->
+        console.log "error"
+    }
 
   add: ->
 

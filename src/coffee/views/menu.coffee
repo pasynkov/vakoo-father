@@ -23,7 +23,8 @@ class MenuView extends Backbone.View
       item.active = if item.route is data.active then true else false
 
     $("title").text(
-      _.compact([_.findWhere(data.items, active: true)?.title, "Vakoo"]).join(" -- ")
+      _.compact([_.findWhere(data.items, active: true)?.title, "Vakoo"])
+      .join(" -- ")
     )
 
     @$el.html @template @model.toJSON()

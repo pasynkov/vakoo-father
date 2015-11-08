@@ -15,8 +15,6 @@ class Api
 
     @logger.info "run request `#{method}` to `#{url}`"
 
-    console.log body
-
     request[method] {
       url: @apiUrl + url
       headers:

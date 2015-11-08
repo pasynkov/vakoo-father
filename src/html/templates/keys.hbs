@@ -1,0 +1,62 @@
+{{#if list}}
+    {{#with data}}
+
+        <div class="row">
+
+            {{#each items}}
+
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <h3>
+                                        {{name}}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <a href="/servers/keys/{{id}}/remove" class="btn btn-default">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {{/each}}
+
+        </div>
+
+    {{/with}}
+{{else}}
+
+    <form class="form-horizontal" id="key-form">
+
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">Name</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="value" name="value" placeholder="SSH Key Value"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary btn-save">Save <i class="fa fa-save"></i></button>
+            </div>
+        </div>
+
+    </form>
+
+{{/if}}

@@ -92,5 +92,17 @@ class ServerController
   getKeys: ->
     vakoo.mysql.collection("ssh_keys").find @context.sendResult
 
+  storeKey: ->
+    vakoo.mysql.collection("ssh_keys").insert {
+      name: @context.request.body.name
+      value: @context.request.body.value
+    }, @context.sendResult
+
+  removeKey: ->
+    vakoo.mysql.collection("ssh_keys").delete {
+      id: +@context.request.params.id
+    }, (err)=>
+      @context.sendResult err, {}
+
 
 module.exports = ServerController
