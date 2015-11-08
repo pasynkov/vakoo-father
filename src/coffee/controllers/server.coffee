@@ -150,11 +150,18 @@ class ServerController extends Backbone.Router
             error: ->
               console.log arguments
           }
+        keys: (taskCallback)->
+          new KeysCollection().fetch {
+            success: (collection)->
+              taskCallback null, collection.toJSON()
+            error: ->
+              console.log arguments
+          }
       }
-      (err, {configurations, accounts, templates})->
+      (err, {configurations, accounts, templates, keys})->
         if err
           return alert err
-        new ServerFormView().render({configurations, accounts, templates})
+        new ServerFormView().render({configurations, accounts, templates, keys})
     )
 
 

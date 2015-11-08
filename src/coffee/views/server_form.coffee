@@ -24,11 +24,34 @@ class AccountForm extends Backbone.View
     )
     @delegateEvents()
 
+    #todo remove this
+
+    $("#name").val("Test Server")
+    $("#host").val("cs1.vakoo.ru")
+
+    $("#configuration [value=#{_.min(data.configurations, (a)->a.memory).id}]").attr("selected", "selected")
+    $("#account [value=#{_.max(data.accounts, (a)->a.stopped).id}]").attr("selected", "selected")
+
   save: (e)->
     e.preventDefault()
 
+    serialized = @$el.serializeArray()
+
+    serialized = _.reject serialized, (i)-> i.name is "keys"
+
+    serialized.push {
+      name: "keys"
+      value: _.compact _.map(
+        @$el.serializeArray()
+        (i)->
+          if i.name is "keys"
+            return i.value
+          return false
+      )
+    }
+
     attrs = _.object _.map(
-      @$el.serializeArray()
+      serialized
       (item)-> [item.name, item.value]
     )
 
@@ -36,7 +59,6 @@ class AccountForm extends Backbone.View
       success: ->
         app.controllers.server.navigate "servers", trigger: true
       error: ->
-        alert "error"
         console.error arguments
     }
 

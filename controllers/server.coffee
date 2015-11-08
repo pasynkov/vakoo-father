@@ -59,13 +59,34 @@ class ServerController
         async.apply async.parallel, {
           account: async.apply vakoo.mysql.collection("accounts").findOne, {id: +@context.request.body.account}
           configuration: async.apply vakoo.mysql.collection("server_configurations").findOne, {id: +@context.request.body.configuration}
-          template: async.apply vakoo.mysql.collection("server_templates").findOne, {id: +@context.request.body.template}
+#          template: async.apply vakoo.mysql.collection("server_templates").findOne, {id: +@context.request.body.template}
+          keys: async.apply vakoo.mysql.collection("ssh_keys").find, {
+            id: {$in: _.map(@context.request.body.keys, (k)-> +k)}
+          }
+          keys_links: async.apply vakoo.mysql.collection("ssh_keys_ids").find, {
+            account_id: +@context.request.body.account
+            key_id: {$in: _.map(@context.request.body.keys, (k)-> +k)}
+          }
         }
-        ({account, configuration, template}, taskCallback)=>
+        ({account, configuration, template, keys, keys_links}, taskCallback)=>
+
+          if keys.length isnt keys_links.length
+
+            keysForAdd = _.reject keys, (key)->
+              key.id in _.map(
+                keys_links
+                (l)->
+                  l.key_id
+              )
+
+            console.log keysForAdd
+
+          return
           api = new Api {account}
 
           api.request ["post", "scalets", {
-            make_from: template.name
+#            make_from: template.name
+            make_from: "debian_8.1_64_001_master"
             rplan: configuration.name
             do_start: true
             name: @context.request.body.name

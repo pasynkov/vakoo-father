@@ -45,16 +45,45 @@ class FetcherInitializer
       callback
     )
 
+  syncKeys: (account, keys, callback)=>
+
+    async.map(
+      keys
+      (key, done)->
+        async.waterfall(
+          [
+            async.apply vakoo.mysql.collection("ssh_keys").findOne, {
+              name: key.name
+              value: key.key
+            }
+
+            (sshKey, taskCallback)->
+
+              vakoo.mysql.collection("ssh_keys_ids").insert {
+                account_id: account.id
+                key_id: sshKey.id
+                remote_key_id: key.id
+              }, {
+                updateOnDuplicate: {ignore: ["remote_key_id"]}
+              }, taskCallback
+
+          ]
+          done
+        )
+      callback
+    )
+
   syncServers: (account, callback)=>
     api = new Api {account}
     async.waterfall(
       [
         async.apply async.parallel, {
           scalets: async.apply api.request, ["get", "scalets"]
+          keys: async.apply api.request, ["get", "sshkeys"]
           configurations: vakoo.mysql.collection("server_configurations").find
           templates: vakoo.mysql.collection("server_templates").find
         }
-        ({scalets, configurations, templates}, taskCallback)=>
+        ({scalets, configurations, templates, keys}, taskCallback)=>
 
           async.map(
             scalets
@@ -79,7 +108,11 @@ class FetcherInitializer
                 "template_id"
                 "name"
               ]}}, done
-            taskCallback
+            (err)=>
+              if err
+                return taskCallback err
+
+              @syncKeys account, keys, taskCallback
           )
       ]
       callback

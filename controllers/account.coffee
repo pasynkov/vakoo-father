@@ -16,7 +16,14 @@ class AccountController
 
   list: ->
 
-    vakoo.mysql.collection("accounts").find @context.sendResult
+    vakoo.mysql.collection("accounts").find (err, accounts)=>
+
+      @context.sendResult err, _.map(
+        accounts
+        (account)->
+          account.stopped = Math.round((account.balance + account.bonus_balance) / (account.consuming_hour * 24))
+          return account
+      )
 
   fetch: ->
 
@@ -41,7 +48,31 @@ class AccountController
           vakoo.mysql.collection("accounts").update {id}, {balance, bonus_balance}, taskCallback
 
         (..., taskCallback)->
-          taskCallback null, accountObject
+
+          vakoo.mysql.execute """
+
+            SELECT SUM(t.hour) as hour, SUM(t.month) as month
+            FROM (SELECT s.name, c.hour, c.month FROM servers as s
+            LEFT JOIN server_costs as c ON s.configuration_id = c.configuration_id
+            WHERE s.account_id = #{accountObject.id}) as t
+
+          """, taskCallback
+
+        ([consuming], taskCallback)->
+
+          accountObject.consuming_hour = consuming.hour
+          accountObject.consuming_month = consuming.month
+
+          accountObject.stopped = Math.round((accountObject.balance + accountObject.bonus_balance) / (accountObject.consuming_hour * 24))
+
+          vakoo.mysql.collection("accounts").update {id}, {
+            consuming_hour: accountObject.consuming_hour
+            consuming_month: accountObject.consuming_month
+          }, (err)->
+
+            taskCallback err, accountObject
+
+
       ]
       @context.sendResult
     )

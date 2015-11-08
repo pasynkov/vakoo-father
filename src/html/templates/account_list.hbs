@@ -24,6 +24,8 @@
         <th>Token</th>
         <th>Balance</th>
         <th>Bonus</th>
+        <th>Consuming (month/hour)</th>
+        <th>Stop after (days)</th>
         <th>...</th>
     </tr>
     {{#each items}}
@@ -35,6 +37,8 @@
             <td>{{token}}</td>
             <td>{{balance}}</td>
             <td>{{bonus_balance}}</td>
+            <td>{{consuming_month}} / {{consuming_hour}}</td>
+            <td>{{stopped}}</td>
             <td>
                 <a href="/accounts/{{id}}/refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
                 <a href="/accounts/{{id}}/edit" class="btn btn-default"><i class="fa fa-edit"></i></a>
